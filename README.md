@@ -138,7 +138,10 @@ def dataframe_cleaner(raw_df, clean_dataframe_filepath):
 3. **Run the Analysis Pipeline:**
 To clean the raw data and export all final plots to the `images/` folder, run:
 ```bash
-python main.py
+python main.py                 # interactive menu
+python main.py --report all    # every report, no prompt (CI, scripts)
+python main.py --report 4      # one report by its menu number
+python -m pytest -q            # the cleaning rules, on a hand-built frame
 
 ```
 

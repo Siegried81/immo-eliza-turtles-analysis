@@ -1,0 +1,10 @@
+# What main.py and src/ import. The README asked for this file and the
+# repository did not have one, so a fresh clone failed at the first import.
+pandas>=2.2
+numpy>=1.26
+matplotlib>=3.8
+seaborn>=0.13
+reportlab>=4.0
+
+# Tests
+pytest>=8.0
