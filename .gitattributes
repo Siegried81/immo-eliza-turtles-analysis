@@ -1,0 +1,5 @@
+# PDFs, slides and images are binary: never diff or merge them as text.
+*.pdf binary
+*.pptx binary
+*.png binary
+*.jpg binary
