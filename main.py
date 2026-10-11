@@ -1,11 +1,22 @@
 from src import export_most_least_expensive_municipalities_regions_report, dataframe_cleaner, correlations_matrix, price_vs_property_states, inventory_by_province, surface_distribution, make_outlier_graph, make_build_year_price_m2_graph
+import argparse
 import pandas as pd
 import os
 
 def main():
     """
+    Clean the raw listings, then produce the reports.
 
+    Interactive by default (the numbered menu). `--report` runs one report or
+    all of them without a prompt, which is what a CI job or a `make reports`
+    needs: `input()` on a machine with no terminal attached hangs forever.
     """
+    parser = argparse.ArgumentParser(description="Immo Eliza market analysis reports")
+    parser.add_argument(
+        "--report", choices=[str(i) for i in range(1, 8)] + ["all"],
+        help="run one numbered report (see the menu) or all of them, then exit",
+    )
+    args = parser.parse_args()
 
     # ---------------------------------------
     # Load configuration file
@@ -30,6 +41,23 @@ def main():
     GREY   = '#878787'
     PALETTE = [BLUE, ORANGE, GREEN, '#9970ab', '#bf812d']
 
+    # One place that says which number runs which report, shared by the menu
+    # below and by --report, so the two cannot drift apart.
+    reports = {
+        "1": lambda: make_outlier_graph(df, base_dir),
+        "2": lambda: make_build_year_price_m2_graph(df, base_dir),
+        "3": lambda: correlations_matrix(df, base_dir),
+        "4": lambda: price_vs_property_states(df, base_dir, PALETTE),
+        "5": lambda: inventory_by_province(df, base_dir),
+        "6": lambda: surface_distribution(df, base_dir),
+        "7": lambda: export_most_least_expensive_municipalities_regions_report(clean_dataframe_filepath, base_dir),
+    }
+    if args.report:
+        for number in (reports if args.report == "all" else [args.report]):
+            print(f"Report {number} is generating")
+            reports[number]()
+        return
+
     # ---------------------------------------
     # Choose URL source mode
     # ---------------------------------------
@@ -47,34 +75,9 @@ def main():
     while True:
         option = input("Choose an option: ")
 
-        if option == "1":
+        if option in reports:
             print("Report is generating")
-            make_outlier_graph(df, base_dir)
-
-        elif option == "2":
-            print("Report is generating")
-            make_build_year_price_m2_graph(df, base_dir)
-
-        elif option == "3":
-            print("Report is generating")
-            correlations_matrix(df, base_dir)
-
-        elif option == "4":
-            print("Report is generating")
-            price_vs_property_states(df, base_dir, PALETTE)
-
-        elif option == "5":
-            print("Report is generating")
-            inventory_by_province(df, base_dir)
-
-        elif option == "6":
-            print("Report is generating")
-            surface_distribution(df, base_dir)
-
-        elif option == "7":
-            print("Report is generating")
-            export_most_least_expensive_municipalities_regions_report(clean_dataframe_filepath, base_dir)
-        
+            reports[option]()
         elif option == "8":
             break
         else:
