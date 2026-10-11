@@ -10,6 +10,8 @@ Following our data scraping phase, this project focuses on cleaning, exploring, 
 * Analyze correlations, distributions, and outliers regarding property prices.
 * Identify the most/least expensive municipalities in Belgium (by region).
 * Deliver a non-technical, high-impact presentation with clear data visualizations.
+
+> **The final presentation** is attached to release [v1.0](https://github.com/Siegried81/immo-eliza-turtles-analysis/releases/tag/v1.0) as `Teamturtlepresentation.pdf` (11.8 MB), rather than committed here.
 * Keep the code understandable enough for the full team to review and maintain.
 
 ---
